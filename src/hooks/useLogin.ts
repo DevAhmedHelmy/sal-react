@@ -1,35 +1,35 @@
-import { useMutation } from '@tanstack/react-query'
-import axiosInstance from '../api/axios';
-import { setToken } from '../utils/localStorageToken';
-import { useNavigate } from 'react-router-dom';
-
+import { useMutation } from "@tanstack/react-query";
+import axiosInstance from "../api/axios";
+import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AuthContext from "../context/AuthContext";
 
 interface LoginData {
   username: string;
   password: string;
 }
 
-interface LoginResponse{
+interface LoginResponse {
   token: string;
 }
 
-function login (data: LoginData) {
- return axiosInstance.post<LoginResponse>(`auth/login`, data);
+const login = (data: LoginData) => {
+  return axiosInstance.post<LoginResponse>(`auth/login`, data);
 };
 
 const useLogin = () => {
-    const navigate = useNavigate();
-  const mutation =  useMutation({
-        mutationKey: ['login'],
-        mutationFn: login,
-        onSuccess: (response) => {
-            setToken(response.data.token);
-            axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`
-            navigate('/')
-        }
-    })
+  const navigate = useNavigate();
+  const { onLogin } = useContext(AuthContext);
+  const mutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: login,
+    onSuccess: (response) => {
+      onLogin(response.data.token);
+      navigate("/");
+    },
+  });
 
-    return mutation
-}
+  return mutation;
+};
 
-export default useLogin
+export default useLogin;

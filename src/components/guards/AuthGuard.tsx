@@ -1,12 +1,14 @@
+import { useContext } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { hasToken } from "../../utils/localStorageToken.ts"
+import AuthContext from "../../context/AuthContext";
+
 
 
 const AuthGuard = () => {
 
-    const isLoggedIn = hasToken();
+    const {isAuth} = useContext(AuthContext);
 
-    if(!isLoggedIn){
+    if(!isAuth){
         return <Navigate to="/login"  replace/>
     }
 

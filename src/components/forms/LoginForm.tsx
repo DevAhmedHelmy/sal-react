@@ -4,7 +4,8 @@ import {
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input
+  Input,
+  VStack
 } from "@chakra-ui/react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -32,21 +33,19 @@ const LoginForm = () => {
   };
 
   return (
-    <Box
+    <VStack
       as="form"
-     
-     
       onSubmit={handleSubmit(onSubmit)}
     >
       <FormControl isInvalid={!!errors.username}>
-        <FormLabel>Username</FormLabel>
+      
         <Input type="text" {...register("username")} placeholder="Username" />
         {errors.username && (
           <FormErrorMessage>{errors.username.message}</FormErrorMessage>
         )}
       </FormControl>
       <FormControl isInvalid={!!errors.password}>
-        <FormLabel>Password</FormLabel>
+       
         <Input
           type="password"
           {...register("password")}
@@ -59,7 +58,7 @@ const LoginForm = () => {
       <Button mt={4} isLoading={isPending} type="submit">
         Sign in
       </Button>
-    </Box>
+    </VStack>
   );
 };
 
